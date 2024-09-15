@@ -28,7 +28,7 @@ def class Line(float x_1, float x_2, float y_1, float y_2):
         '''
       
         '''
-        return sqrt((self.x_2 - self.x_1)**2 + (self.y_2 - self.y_1)**2)
+        return math.sqrt((self.x_2 - self.x_1)**2.0 + (self.y_2 - self.y_1)**2.0)
       
    def intersects(self, other):
       '''
@@ -114,9 +114,9 @@ def class Line(float x_1, float x_2, float y_1, float y_2):
                  // AND FINALLY dy_dx = +- (x - other.x)**(-0.5)
                  
                  if np.isclose([dy_dx], [(x - other.x)**(-0.5)])[0] or np.isclose([dy_dx], [-(x - other.x)**(-0.5)])[0]:
-                    return True
+                    return (x, m * x + b)
                     
-        return False
+        return None
          
          
 def class Circle(float x, float y, float r):
@@ -150,7 +150,10 @@ def class Circle(float x, float y, float r):
       if isinstance(other, Line):
          return other.intersects(self)
       elif isinstance(other, Circle):
-         return math.sqrt((other.x - self.x)**2.0 + (other.y - self.y)**2.0) <= self.r + orher.r
+         if math.sqrt((other.x - self.x)**2.0 + (other.y - self.y)**2.0) <= self.r + orher.r:
+            return ((self.x + other.x) / 2.0, (self.y + other.y) / 2.0)
+         else:
+            return None
         
         
    def intersects_tangentially(self, other):
@@ -158,7 +161,10 @@ def class Circle(float x, float y, float r):
     
       '''
       if isinstance(other, Circle):
-         return np.isclose([math.sqrt((other.x - self.x)**2.0 + (other.y - self.y)**2.0)], [r_1 + r_2])[0]:
+         if np.isclose([math.sqrt((other.x - self.x)**2.0 + (other.y - self.y)**2.0)], [r_1 + r_2])[0]:
+            return ((self.x + other.x) / 2.0, (self.y + other.y) / 2.0)
+         else:
+            return None
         
     
    if __name__ == '__main__'
