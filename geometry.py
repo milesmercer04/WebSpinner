@@ -10,9 +10,13 @@ def class Line(float x_1, float x_2, float y_1, float y_2):
         self.y_2 = y_2
         
     def __str__(self):
-        return f'<%f, %f, %f, %f>', (self.x_1, self.x_2, self.y_1, self.y_2)
+        return f'<{self.x_1}, {self.y_1}, {self.x_2}, {self.y_2}>'
+      
+   def __main__(self):
+        print(self)
+      
     
     if __name__ == '__main__'
-        pass
+        self.__main__()
     
     
