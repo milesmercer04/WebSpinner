@@ -54,7 +54,7 @@ def class Line(float x_1, float x_2, float y_1, float y_2):
             y = m_1 * x + b_1
             return (x, y)
             
-       elif isinstance(other, Circle):
+     elif isinstance(other, Circle):
           // self.y_2 - self.y_1 = m * (self.x_2 - self.x_1)
           // m = (self.y_2 - self.y_1) / (self.x_2 - self.x_1)
           // b = self.y_1 - m * self.x_1
