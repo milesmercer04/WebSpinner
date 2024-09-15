@@ -15,7 +15,7 @@ def class Line(float x_1, float x_2, float y_1, float y_2):
         self.y_1 = y_1
         self.y_2 = y_2
         
-    def __str__(self):
+    def __repr__(self):
         '''
       
         '''
@@ -54,12 +54,10 @@ def class Line(float x_1, float x_2, float y_1, float y_2):
             y = m_1 * x + b_1
             return (x, y)
             
-      elif isinstance(other, Circle):
+       elif isinstance(other, Circle):
           // self.y_2 - self.y_1 = m * (self.x_2 - self.x_1)
           // m = (self.y_2 - self.y_1) / (self.x_2 - self.x_1)
           // b = self.y_1 - m * self.x_1
-          // x_1 = self.x_1
-          // y_1 = m * x_1 + b
           // (x_2 - other.x)**2.0 + (y_2 - other.y)**2.0 = other.r**2.0
           // (y_2 - other.y)**2.0 = other.r**2.0 - (x_2 - other.x)**2.0
           // y_2 - other.y = +- sqrt(other.r**2.0 - (x_2 - other.x)**2.0)
@@ -104,7 +102,7 @@ def class Line(float x_1, float x_2, float y_1, float y_2):
             // Positive function of Circle other
             if np.isclose([m * x + b], [other.y + sqrt(other.r**2.0 - (x - other.x)**2.0)])[0]
             // Negative function of Circle other
-                 or np.isclose([m * x + b], [other.y - sqrt(other.r**2.0 - (x - other.x)**2.0)])[0]:
+                 or np.isclose([m * x + b], [other.y - sqrt(other.r**2.0 - (x - other.x)**2.0)])[1]:
                  // y = other.y +- sqrt(other.r**2.0 - (x - other.x)**2.0)
                  // y = other.y +- (other.r**2.0 - (x - other.x)**2.0)**(1.0 / 2.0)
                  // LET u = other.r**2.0 - (x - other.x)**2.0
@@ -113,7 +111,7 @@ def class Line(float x_1, float x_2, float y_1, float y_2):
                  // THUS dy_dx = +- 0.5 * du_dx**(-0.5)
                  // AND FINALLY dy_dx = +- (x - other.x)**(-0.5)
                  
-                 if np.isclose([dy_dx], [(x - other.x)**(-0.5)])[0] or np.isclose([dy_dx], [-(x - other.x)**(-0.5)])[0]:
+                 if np.isclose([dy_dx], [(x - other.x)**(-0.5)])[0] or np.isclose([dy_dx], [-(x - other.x)**(-0.5)])[1]:
                     return (x, m * x + b)
                     
         return None
@@ -151,7 +149,21 @@ def class Circle(float x, float y, float r):
          return other.intersects(self)
       elif isinstance(other, Circle):
          if math.sqrt((other.x - self.x)**2.0 + (other.y - self.y)**2.0) <= self.r + orher.r:
-            return ((self.x + other.x) / 2.0, (self.y + other.y) / 2.0)
+             tangential_intersection = self.intersects_tangentially(other):
+             if tangential_intersection is not None:
+                return tangential_intersection
+             else:
+                // The two circle objects intersect twice
+                // Each of the two circles is composed of two semicircles, which we'll designate s_1_U, s_2_L, etc.
+                // These two intersections may take any of three forms:
+                // - Two intersections between s_1_L and s_2_U
+                // - One intersection between s_1_U and s_2_U and anothet between s_1_L and s_2_L
+                // - Two intersections between s_1_U and s_2_L
+                // Let us define s_1_U, s_1_L, s_2_U, and s_2_L by the following:
+                    // s_1_U(x) = self.y + math.sqrt(self.r**2.0 - (x - self.x)**2.0)
+                    // s_1_L(x) = self.y - math.sqrt(self.r**2.0 - (x - self.x)**2.0)
+                    // s_2_U(x) = other.y + math.sqrt(other.r**2.0 - (x - other.x)**2.0)
+                    // s_2_L(x) = other.y - math.sqrt(other.r**2.0 - (x - other.x)**2.0)
          else:
             return None
         
